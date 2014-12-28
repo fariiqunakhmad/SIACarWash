@@ -1,0 +1,134 @@
+<%-- 
+    Document   : daftarcOA
+    Created on : Oct 10, 2014, 6:50:06 AM
+    Author     : Akhmad Fariiqun Awwa
+--%>
+
+<%@page import="com.sia.query.COAQuery"%>
+<%@page import="com.sia.utils.DBConnection"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="com.sia.model.COA"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Tabel COA</title>
+    <jsp:include page="clientimport.jsp" />
+    
+</head>
+
+<body>
+<%
+    //allow access only if session exists
+    String user = null;
+    if(session.getAttribute("id") == null){
+        response.sendRedirect("login.jsp");
+    }else user = (String) session.getAttribute("name");
+    String userName = null;
+    String sessionID = null;
+    Cookie[] cookies = request.getCookies();
+    if(cookies !=null){
+    for(Cookie cookie : cookies){
+        if(cookie.getName().equals("name")) userName = cookie.getValue();
+        if(cookie.getName().equals("JSESSIONID")) sessionID = cookie.getValue();
+    }
+    }
+    %>
+   
+    <div id="wrapper">
+        <jsp:include page="navigation.jsp" />
+        <div id="page-wrapper">
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            Tabel COA
+                        </h1>
+                        <ol class="breadcrumb">
+                            <li>
+                                <i class="fa fa-dashboard"></i>  <a href="index.jsp">Dashboard</a>
+                            </li>
+                            <li class="active">
+                                <i class="fa fa-table"></i> COA
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                <!-- /.row -->
+                <a href="formcoa.jsp">Tambah</a>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Id JenisCOA</th>
+                                        <th>Nama</th>
+                                        <th>SaldoAwal</th>
+                                        <th>TglBuka</th>
+                                        <th>Control</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%!
+                public List <COA> lcOA= new ArrayList <COA>();
+                %>
+                <%
+                DBConnection dbc = DBConnection.getInstance();
+                int row=0;
+                try{
+                    COAQuery cOAq = new COAQuery(dbc.getCon());
+                    lcOA=cOAq.getAll();
+                    System.out.println("Load Sukses");
+                } catch (Exception e){
+                    System.out.println("Gagal karena : "+ e);
+                }
+                for (row=0; this.lcOA.size()>row; row++){
+                    COA cOA=lcOA.get(row);
+                    out.println(
+                                    "<tr>"+
+                                        "<td>"+cOA.getIdCOA()+"</td>"+
+                                        "<td>"+cOA.getIdJenisCOA()+"</td>"+
+                                        "<td>"+cOA.getNamaCOA()+"</td>"+
+                                        "<td>"+cOA.getSaldoAwalCOA()+"</td>"+
+                                        "<td>"+cOA.getTglBukaCOA()+"</td>"+
+                                        "<td><a href='formcoa.jsp?idCOA="+cOA.getIdCOA()+"'>Edit</a> | <a href='deleteCOA?idCOA="+cOA.getIdCOA()+"'>Delete</a></td>"+
+                                    "</tr>");
+                    
+                }
+                //out.print(lcOA.size());
+                %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                   
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+    
+</body>
+
+</html>
