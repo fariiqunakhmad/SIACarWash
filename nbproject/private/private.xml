@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/F:/my%20document/GitHub/SIACarWash/web/formcoa.jsp</file>
             <file>file:/F:/my%20document/GitHub/SIACarWash/src/java/com/sia/model/Pembelian.java</file>
             <file>file:/F:/my%20document/GitHub/SIACarWash/web/formpembelian.jsp</file>
@@ -10,6 +11,15 @@
             <file>file:/F:/my%20document/GitHub/SIACarWash/src/java/com/sia/servlet/ActionUpdatePembelian.java</file>
             <file>file:/F:/my%20document/GitHub/SIACarWash/src/java/com/sia/servlet/ActionInsertPembelian.java</file>
             <file>file:/F:/my%20document/GitHub/SIACarWash/src/java/com/sia/query/COAQuery.java</file>
+=======
+<<<<<<< HEAD
+            <file>file:/C:/Users/Akhmad%20Fariiqun/Documents/NetBeansProjects/SIACarWash/web/formjcoa.jsp</file>
+            <file>file:/C:/Users/Akhmad%20Fariiqun/Documents/NetBeansProjects/SIACarWash/web/navigation.jsp</file>
+            <file>file:/C:/Users/Akhmad%20Fariiqun/Documents/NetBeansProjects/SIACarWash/web/index.jsp</file>
+=======
+            <file>file:/F:/my%20document/GitHub/SIACarWash/web/formjcoa.jsp</file>
+>>>>>>> origin/master
+>>>>>>> origin/master
         </group>
     </open-files>
 </project-private>
