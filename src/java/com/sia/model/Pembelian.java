@@ -4,15 +4,17 @@
  */
 package com.sia.model;
 
+import java.sql.Date;
+
 /**
  *
  * @author ibnu
  */
 public class Pembelian {
 private String idPembelian;
-private String pemasok;
+private int pemasok;
 private String pegawai;
-private String tanggal;
+private Date tanggal;
 
     /**
      * @return the idPembelian
@@ -31,14 +33,14 @@ private String tanggal;
     /**
      * @return the pemasok
      */
-    public String getPemasok() {
+    public int getPemasok() {
         return pemasok;
     }
 
     /**
      * @param pemasok the pemasok to set
      */
-    public void setPemasok(String pemasok) {
+    public void setPemasok(int pemasok) {
         this.pemasok = pemasok;
     }
 
@@ -59,17 +61,18 @@ private String tanggal;
     /**
      * @return the tanggal
      */
-    public String getTanggal() {
+    public Date getTanggal() {
         return tanggal;
     }
 
     /**
      * @param tanggal the tanggal to set
      */
-    public void setTanggal(String tanggal) {
+    public void setTanggal(Date tanggal) {
         this.tanggal = tanggal;
     }
 
+    
     
 
 }

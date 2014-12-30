@@ -23,40 +23,104 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Form 
             Pembelian</title>
+        <jsp:include page="clientimport.jsp" />
+        
     </head>
     <body>
+        <div id="wrapper">
+            
+            
+
+        <jsp:include page="navigation.jsp" />
+        <%
+    //allow access only if session exists
+    String user = null;
+    if(session.getAttribute("id") == null){
+        response.sendRedirect("login.jsp");
+    }else user = (String) session.getAttribute("name");
+    String userName = null;
+    String sessionID = null;
+    Cookie[] cookies = request.getCookies();
+    if(cookies !=null){
+    for(Cookie cookie : cookies){
+        if(cookie.getName().equals("name")) userName = cookie.getValue();
+        if(cookie.getName().equals("JSESSIONID")) sessionID = cookie.getValue();
+    }
+    }
+    %>
+        
         <%
             java.util.Calendar cal = java.util.Calendar.getInstance();
             java.util.Date utilDate = cal.getTime();
             
             String timeStamp = new SimpleDateFormat("ddHHmmss").format(Calendar.getInstance().getTime());
-            String idPP="PP"+timeStamp, idPetugasPBB="PEG01", idPengambilPBB="", action;
-        java.sql.Date tglPP = new java.sql.Date(utilDate.getTime());
+            String idPembelian="PP"+timeStamp, pegawai="PEG01", action;
+            
+        java.sql.Date tglPP= new java.sql.Date(utilDate.getTime());
+        
+        int pemasok=0;
+        if(request.getParameter("txtid")!=null){
+            idPembelian=request.getParameter("txtid");
+            DBConnection conn = DBConnection.getInstance();
+            PembelianQuery pq= new PembelianQuery(conn.getCon());
+            Pembelian p=new Pembelian();
+            p=pq.load(idPembelian);
+            pemasok=p.getPemasok();
+            pegawai=p.getPegawai();
+            
+            
+            action="updatepembelian";
+            
+        } else  action="insertpembelian";
         %>
-        <h1 align="center">Input Data Pembelian</h1>
-        <form action="insertpembelian" method="POST">
-            <table align="center">
-                <tr>
-                    <td>ID PEMBELIAN</td>
-                    <td><input type="text" name="txtid" value="<% out.print(idPP);%>"></td>
-                </tr>
+        <div id="page-wrapper">
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+        <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            Form Pembelian
+                        </h1>
+                        <ol class="breadcrumb">
+                            <li>
+                                <i class="fa fa-dashboard"></i>  <a href="index.jsp">Beranda</a>
+                            </li>
+                            <li class="active">
+                                <i class="fa fa-edit"></i> Pembelian
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                <!-- /.row -->
                 
-                <tr>
-                <tr>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <form action="<% out.print(action); %>" method="POST">
+            <div class="form-group">
+                    <td>ID PEMBELIAN</td>
+                    <td><input class="form-control" type="text" name="txtid" value="<% out.print(idPembelian);%>"></td>
+                </div>
+                
+                <div class="form-group">
                     <td>PEMASOK</td>
                 <%!
                 public List<Pemasok> datap = new ArrayList<Pemasok>();
                 %>
 
                 
-                    <td><select name="txtpemasok">
+                    <td><select class="form-control"  name="txtpemasok">
                 <%
                 DBConnection dbc = DBConnection.getInstance();
                 int r = 0;
                PemasokQuery kt = new PemasokQuery(dbc.getCon());
                 datap = kt.getAll2();
                 
-                            for (r = 0; this.data.size() > r; r++) {
+                            for (r = 0; this.datap.size() > r; r++) {
                             out.print("<option value=");
                             out.print(datap.get(r).getIdPemasok());
                             out.print(">");
@@ -65,76 +129,108 @@
                             }
                 %>            
                         </select>
-                </tr>
+                </div>
                 
-                <tr>
+                <div class="form-group">
                     <td>PEGAWAI</td>
-                    <td><input type="text" name="txtpeg" value="peg_001" readonly="" ></td>
-                </tr>
+                    <td><input class="form-control" type="text" name="txtpeg" value="<% out.print(pegawai);%>" readonly="" ></td>
+                </div>
                 
-                <tr>
+                <div class="form-group">
                     <td>TANGGAL</td>
-                    <td><input type="text" name="txttgl" readonly="" value="<% out.print(tglPP);%>"></td>
-                </tr>
+                    <td><input class="form-control" type="text" name="txttgl" readonly="" value="<% out.print(tglPP);%>"></td>
+                </div>
                 
-                <tr>
-                    <td><input type="submit" value="submit"></td>
-                    <td><input type="reset" value="clear form"></td>
-                </tr>
+                <button type="submit" name="submit" value="submit" class="btn btn-sm btn-primary">Submit</button>
+                            <button type="reset" name="reset" value="clear form" class="btn btn-sm btn-danger" >Clear Field</button>
+                     
+                </form>
+                </div>
+                    
+                </div>
+                <!-- /.row -->
                 
-            </table>
-            
-            
-        </form>
-        
-        <br><br>        
-        <table align="center" border="2" >  
-    <th>Id Pembelian</th>
-    <th>Pemasok</th>
-    <th>Pegawai</th>
-    <th>Tanggal</th>
+            </div>
+                
+               
+            <!-- /.container-fluid -->
+            <br><br>
+            <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            Tabel Pembelian
+                        </h1>
+                        <ol class="breadcrumb">
+                            <li>
+                                <i class="fa fa-dashboard"></i>  <a href="index.jsp">Dashboard</a>
+                            </li>
+                            <li class="active">
+                                <i class="fa fa-table"></i> Pembelian
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                <!-- /.row -->
+                <a align="center" href="formjcoa.jsp">Tambah</a>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="table-responsive">
+                            <table align="center" class="table table-bordered table-hover">
+                                <thead align="center">
+                                    <tr>
+                                        <th>Id Pembelian</th>
+                                            <th>Pemasok</th>
+                                                <th>Pegawai</th>
+                                                    <th>Tanggal</th>
     
-    <th colspan="2">CONTROL</th>
-   
-    <%!
-        public List <Pembelian> data =
-                new ArrayList <Pembelian>();
-    %>
-    
-    <%
-        DBConnection conn= DBConnection.getInstance();
-        int row=0;
-           
-        PembelianQuery mq=new PembelianQuery(conn.getCon());
-        data= mq.getAll2();
+                                                        <th colspan="2">CONTROL</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%!
+                public List <Pembelian> data= new ArrayList <Pembelian>();
+                %>
+                <%
+                DBConnection conn = DBConnection.getInstance();
+                int row=0;
+                try{
+                    PembelianQuery mq = new PembelianQuery(dbc.getCon());
+                    data=mq.getAll2();
+                    System.out.println("Load Sukses");
+                } catch (Exception e){
+                    System.out.println("Gagal karena : "+ e);
+                }
+                for (row=0; this.data.size()>row; row++){
+                    Pembelian p=data.get(row);
+                    out.println(
+                                    "<tr>"+
+                                        "<td>"+p.getIdPembelian()+"</td>"+
+                                        "<td>"+p.getPemasok()+"</td>"+
+                                            "<td>"+p.getPegawai()+"</td>"+
+                                            "<td>"+p.getTanggal()+"</td>"+
+                                        "<td><a href='formpembelian.jsp?txtid="+p.getIdPembelian()+"'>Edit</a> | <a href='deletepembelian?txtid="+p.getIdPembelian()+"'>Delete</a></td>"+
+                                    "</tr>");
+                    
+                }
+                //out.print(ljenisCOA.size());
+                %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                   
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
         
-        for(row=0; this.data.size()>row; row++){
-            Pembelian p=data.get(row);
-            out.print("<tr>");
-            out.print("<td>");
-            out.print(p.getIdPembelian());
-            out.print("</td>");
-            out.print("<td>");
-            out.print(p.getPemasok());
-            out.print("</td>");
-            out.print("<td>");
-            out.print(p.getPegawai());
-            out.print("</td>");
-            out.print("<td>");
-            out.print(p.getTanggal());
-            out.print("</td>");
-            out.print("<td>");%>
-            <a href="updatepembelian.jsp?txtid=<%=data.get(row).getIdPembelian()%>">Update</a>
-            <%out.print("</td>");
-            out.print("<td>"); %>
-            <a href="deletepembelian?txtid=<%=data.get(row).getIdPembelian()%>">Delete</a>
-            <%out.print("</td>");
-            
-            out.print("</tr>");
-            
-        }
-    %>
-     </table>
+       
         
     </body>
 </html>

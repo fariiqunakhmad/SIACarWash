@@ -74,13 +74,41 @@ public final class formcoa_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("    <meta name=\"description\" content=\"\">\r\n");
       out.write("    <meta name=\"author\" content=\"\">\r\n");
       out.write("\r\n");
-      out.write("    <title>FORM PEGAWAI</title>\r\n");
+      out.write("    <title>Form COA</title>\r\n");
+      out.write("\r\n");
+      out.write("    ");
+      org.apache.jasper.runtime.JspRuntimeLibrary.include(request, response, "clientimport.jsp", out, false);
       out.write("\r\n");
       out.write("    \r\n");
       out.write("\r\n");
       out.write("</head>\r\n");
       out.write("\r\n");
       out.write("<body>\r\n");
+      out.write("    ");
+
+    //allow access only if session exists
+    String user = null;
+    if(session.getAttribute("id") == null){
+        response.sendRedirect("login.jsp");
+    }else user = (String) session.getAttribute("name");
+    String userName = null;
+    String sessionID = null;
+    Cookie[] cookies = request.getCookies();
+    if(cookies !=null){
+    for(Cookie cookie : cookies){
+        if(cookie.getName().equals("name")) userName = cookie.getValue();
+        if(cookie.getName().equals("JSESSIONID")) sessionID = cookie.getValue();
+    }
+    }
+    
+      out.write("\r\n");
+      out.write("   \r\n");
+      out.write("    <div id=\"wrapper\">\r\n");
+      out.write("\r\n");
+      out.write("        ");
+      org.apache.jasper.runtime.JspRuntimeLibrary.include(request, response, "navigation.jsp", out, false);
+      out.write("\r\n");
+      out.write("\r\n");
       java.util.Calendar cal = java.util.Calendar.getInstance();
         java.util.Date utilDate = cal.getTime();
         java.sql.Date tglBukaCOA= new java.sql.Date(utilDate.getTime());
@@ -104,14 +132,7 @@ public final class formcoa_jsp extends org.apache.jasper.runtime.HttpJspBase
         } else  action="insertCOA";
         
       out.write("\r\n");
-      out.write("    <div id=\"wrapper\">\r\n");
-      out.write("\r\n");
-      out.write("        <!-- Navigation -->\r\n");
-      out.write("        ");
-
-        //out.print(viewTemplate.getMenu()); 
-        
-      out.write("\r\n");
+      out.write("    \r\n");
       out.write("        <div id=\"page-wrapper\">\r\n");
       out.write("\r\n");
       out.write("            <div class=\"container-fluid\">\r\n");
@@ -173,9 +194,8 @@ public final class formcoa_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\r\n");
       out.write("                            <div class=\"form-group\">\r\n");
       out.write("                                <label>JENIS COA</label>\r\n");
-      out.write("                                <select class=\"form-control\" placeholder=\"Pilih KOTA\" name=\"txtIdJenisCOA\" id=\"txtidkota\">\r\n");
-      out.write("                                    ");
-      out.write("\r\n");
+      out.write("                                <select class=\"form-control\"  name=\"txtIdJenisCOA\" id=\"txtIdJenisCOA\">\r\n");
+      out.write("                                    \r\n");
       out.write("                                    ");
 
                                     DBConnection dbc = DBConnection.getInstance();
@@ -187,23 +207,27 @@ public final class formcoa_jsp extends org.apache.jasper.runtime.HttpJspBase
                                         System.out.println("Gagal karena : "+ e);
                                     }
                                     for (int row=0; this.lJenisCOA.size()>row; row++){
-                                        JenisCOA kota=lJenisCOA.get(row);
-                                        out.println("<option value='"+ kota.getIdJenisCOA()+"'>"+kota.getNamaJenisCOA() +"</option>");
-
-
+                                        JenisCOA jCOA=lJenisCOA.get(row);
+                                        out.println("<option value='"+ jCOA.getIdJenisCOA()+"'>"+jCOA.getNamaJenisCOA() +"</option>");
                                     }
-                                    //out.print(lcOA.size());
                                     
-      out.write("\r\n");
-      out.write("                                    \r\n");
+      out.write(" \r\n");
       out.write("                                </select>\r\n");
       out.write("                            </div>\r\n");
-      out.write("                             <div class=\"form-group\">\r\n");
-      out.write("                                <label>TELP</label>\r\n");
-      out.write("                                <input type=\"radio\" checked class=\"form-control\"  name=\"txtStatCOA\" value=\"1\">Aktif\r\n");
-      out.write("                                <input type=\"radio\" class=\"form-control\"  name=\"txtStatCOA\" value=\"0\">Non Aktif\r\n");
-      out.write("\r\n");
-      out.write("                            </div>\r\n");
+      out.write("                             \r\n");
+      out.write("                                        <div class=\"form-group\">\r\n");
+      out.write("                                            <label>Status COA</label>\r\n");
+      out.write("                                            <div class=\"radio\">\r\n");
+      out.write("                                                <label>\r\n");
+      out.write("                                                    <input type=\"radio\" name=\"txtStatCOA\" id=\"optionsRadios1\" value=\"1\" checked>Aktif\r\n");
+      out.write("                                                </label>\r\n");
+      out.write("                                            </div>\r\n");
+      out.write("                                            <div class=\"radio\">\r\n");
+      out.write("                                                <label>\r\n");
+      out.write("                                                    <input type=\"radio\" name=\"txtStatCOA\" id=\"optionsRadios2\" value=\"0\">Non Aktif\r\n");
+      out.write("                                                </label>\r\n");
+      out.write("                                            </div>\r\n");
+      out.write("                                        </div>\r\n");
       out.write("                            \r\n");
       out.write("                            <button type=\"submit\" name=\"submit\" value=\"submit\" class=\"btn btn-sm btn-primary\">Submit</button>\r\n");
       out.write("                            <button type=\"reset\" name=\"reset\" value=\"clear form\" class=\"btn btn-sm btn-danger\" >Clear Field</button>\r\n");
@@ -223,9 +247,7 @@ public final class formcoa_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\r\n");
       out.write("    </div>\r\n");
       out.write("    <!-- /#wrapper -->\r\n");
-      out.write("\r\n");
-      out.write("    \r\n");
-      out.write("\r\n");
+      out.write(" \r\n");
       out.write("</body>\r\n");
       out.write("\r\n");
       out.write("</html>\r\n");
