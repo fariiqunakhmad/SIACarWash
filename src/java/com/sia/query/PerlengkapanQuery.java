@@ -8,8 +8,11 @@ package com.sia.query;
  *
  * @author ibnu
  */
+import com.sia.model.COA;
+import com.sia.model.Pembelian;
 import com.sia.model.Perlengkapan;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -74,6 +77,26 @@ public class PerlengkapanQuery {
 //        return cs;
 //    }
 
+    public Perlengkapan load(String idPerlengkapan) {
+        Perlengkapan p = null;
+        String sql = "SELECT * FROM `perlengkapan` WHERE `ID_PERLENGKAPAN`=?";
+        try {
+        PreparedStatement st = conn.prepareStatement(sql);
+        st.setString(1, idPerlengkapan);
+        ResultSet rs = st.executeQuery();
+        if (rs.next()) {
+        p = new Perlengkapan();
+        p.setIdPerkap(rs.getString(1));
+        p.setNamaPerkap(rs.getString(2));
+        
+        
+        }
+        } catch (SQLException ex) {
+        Logger.getLogger(COA.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return p;
+    }
+    
     public List<Perlengkapan> getAll() {
         Perlengkapan p = null;
         String sql = "SELECT NO_KTP_PELANGGAN,ID_KOTA, NAMA_PELANGGAN, ALAMAT_PELANGGAN, NO_HP_PELANGGAN, JK_PELANGGAN FROM pelanngan";

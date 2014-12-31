@@ -8,10 +8,12 @@ package com.sia.query;
  *
  * @author ibnu
  */
+import com.sia.model.COA;
 import com.sia.model.Pemasok;
 import com.sia.model.Pembelian;
 import com.sia.model.Perlengkapan;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -167,9 +169,9 @@ public class PembelianQuery {
             while (rs.next()) {
                 Pembelian p = new Pembelian();
                 p.setIdPembelian(rs.getString(1));
-                p.setPemasok(rs.getString(2));
+                p.setPemasok(rs.getInt(2));
                 p.setPegawai(rs.getString(3));
-                p.setTanggal(rs.getString(4));
+                p.setTanggal(Date.valueOf(rs.getString(4)));
                 
                 list.add(p);
             }
@@ -188,9 +190,9 @@ public class PembelianQuery {
         try {
             PreparedStatement st = conn.prepareStatement(sql);
             st.setString(1, p.getIdPembelian());
-            st.setString(2, p.getPemasok());
+            st.setInt(2, p.getPemasok());
             st.setString(3, p.getPegawai());
-            st.setString(4, p.getTanggal());
+            st.setString(4, String.valueOf(p.getTanggal()));
             
             st.executeUpdate();
         } catch (SQLException ex) {
@@ -206,9 +208,9 @@ public class PembelianQuery {
         try {
             PreparedStatement pst = conn.prepareStatement(sql);
 
-            pst.setString(1, p.getPemasok());
+            pst.setInt(1, p.getPemasok());
             pst.setString(2, p.getPegawai());
-            pst.setString(3, p.getTanggal());
+            pst.setString(3, String.valueOf(p.getTanggal()));
             pst.setString(4, p.getIdPembelian());
           pst.executeUpdate();
         } catch (Exception e) {
@@ -227,6 +229,26 @@ public class PembelianQuery {
         }
     }
 
+    public Pembelian load(String idPembelian) {
+        Pembelian p = null;
+        String sql = "SELECT * FROM `pembelian_perlengkapan` WHERE `ID_PP`=?";
+        try {
+        PreparedStatement st = conn.prepareStatement(sql);
+        st.setString(1, idPembelian);
+        ResultSet rs = st.executeQuery();
+        if (rs.next()) {
+        p = new Pembelian();
+        p.setIdPembelian(rs.getString(1));
+        p.setPemasok(rs.getInt(2));
+        p.setPegawai(rs.getString(3));
+        p.setTanggal(Date.valueOf(rs.getString(4)));
+        
+        }
+        } catch (SQLException ex) {
+        Logger.getLogger(COA.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return p;
+    }
   
     public Pembelian getAll(String idPembelian) {
         Pembelian p = null;
@@ -238,9 +260,9 @@ public class PembelianQuery {
             if (rs.next()) {
                 p = new Pembelian();
                 p.setIdPembelian(rs.getString(1));
-                p.setPemasok(rs.getString(2));
+                p.setPemasok(rs.getInt(2));
                 p.setPegawai(rs.getString(3));
-                p.setTanggal(rs.getString(4));
+                p.setTanggal(Date.valueOf(rs.getString(4)));
                 
               
             }

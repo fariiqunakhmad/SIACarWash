@@ -296,6 +296,15 @@
                                 <li>
                                     <a href="formjcoa.jsp">Form Jenis COA</a>
                                 </li>
+                                <li>
+                                    <a href="formpembelian.jsp">Form Pembelian</a>
+                                </li>
+                                <li>
+                                    <a href="formperlengkapan.jsp">Form Perlengkapan</a>
+                                </li>
+                                <li>
+                                    <a href="formpemasok.jsp">Form Pemasok</a>
+                                </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>

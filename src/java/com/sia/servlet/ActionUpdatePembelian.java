@@ -13,6 +13,7 @@ import com.sia.query.PerlengkapanQuery;
 import com.sia.utils.DBConnection;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -44,9 +45,9 @@ public class ActionUpdatePembelian extends HttpServlet {
             throws ServletException, IOException {
         
         p.setIdPembelian(request.getParameter("txtid"));
-        p.setPemasok(request.getParameter("txtpemasok"));
+        p.setPemasok(Integer.parseInt(request.getParameter("txtpemasok")));
         p.setPegawai(request.getParameter("txtpeg"));
-        p.setTanggal(request.getParameter("txttgl"));
+        p.setTanggal(Date.valueOf(request.getParameter("txttgl")));
        
         try {
             PembelianQuery mx = new PembelianQuery(dbc.getCon());

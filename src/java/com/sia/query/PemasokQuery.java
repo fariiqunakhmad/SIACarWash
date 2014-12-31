@@ -8,6 +8,7 @@ package com.sia.query;
  *
  * @author ibnu
  */
+import com.sia.model.COA;
 import com.sia.model.Pemasok;
 import com.sia.model.Perlengkapan;
 import java.sql.Connection;
@@ -75,6 +76,27 @@ public class PemasokQuery {
 //        return cs;
 //    }
 
+    public Pemasok load(String idPemasok) {
+        Pemasok p = null;
+        String sql = "SELECT * FROM `pemasok` WHERE `NO_PEMASOK`=?";
+        try {
+        PreparedStatement st = conn.prepareStatement(sql);
+        st.setString(1, idPemasok);
+        ResultSet rs = st.executeQuery();
+        if (rs.next()) {
+        p = new Pemasok();
+        p.setIdPemasok(rs.getString(1));
+        p.setNamaPemasok(rs.getString(2));
+        p.setTelepon(rs.getString(3));
+        p.setAlamat(rs.getString(4));
+        
+        }
+        } catch (SQLException ex) {
+        Logger.getLogger(COA.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return p;
+    }
+    
     public List<Perlengkapan> getAll() {
         Perlengkapan p = null;
         String sql = "SELECT NO_KTP_PELANGGAN,ID_KOTA, NAMA_PELANGGAN, ALAMAT_PELANGGAN, NO_HP_PELANGGAN, JK_PELANGGAN FROM pelanngan";
